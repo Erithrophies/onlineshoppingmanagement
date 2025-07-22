@@ -22,4 +22,8 @@ export class AdminService {
     addAdmin(admin:object):object{
         return admin;
     }
+
+    deleteAdmin(id: number): string {
+        return 'Admin deleted ';
+    }
 }

@@ -1,4 +1,4 @@
-import { Controller,Get,Param,Body,Post,Query } from "@nestjs/common";    
+import { Controller,Get,Param,Body,Post,Query, Delete } from "@nestjs/common";    
 import { AdminService } from './admin.service';
 import { get } from "http";
 
@@ -34,5 +34,10 @@ return this.adminService.getAdminByNameandID(name,id);
    addAdmin(@Body() admindata: object)  : object{
     return this.adminService.addAdmin(admindata);
    }
+
+    @Delete('deleteUser/:id') 
+       deleteAdmin(@Param('id') id: number): string { 
+           return this.adminService.deleteAdmin(id); 
+       }
    
 }
