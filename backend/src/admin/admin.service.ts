@@ -2,15 +2,15 @@ import { Injectable } from "@nestjs/common";
 @Injectable()
 export class AdminService {
   getAdminInfo(): string {
-    return 'Admin Information';
+    return 'Admin Information Show';
   }
 
     getPhoto(): string {
-        return 'Admin Photos';
+        return 'Admin Photos Show';
     }
 
     getAdmin():string {
-        return "All Admin";
+        return "All Admin Show";
     }
     getPhotobyid(photoid: number): string {
         return 'Admin photo id is ' + photoid;
@@ -24,6 +24,6 @@ export class AdminService {
     }
 
     deleteAdmin(id: number): string {
-        return 'Admin deleted ';
+        return 'Admin  deleted ';
     }
 }
