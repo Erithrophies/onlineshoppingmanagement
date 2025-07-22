@@ -35,7 +35,7 @@ return this.adminService.getAdminByNameandID(name,id);
     return this.adminService.addAdmin(admindata);
    }
 
-    @Delete('deleteUser/:id') 
+    @Delete('deleteAdmin/:id') 
        deleteAdmin(@Param('id') id: number): string { 
            return this.adminService.deleteAdmin(id); 
        }
