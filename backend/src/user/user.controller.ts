@@ -36,6 +36,7 @@ export class UserController {
         return this.userService.deleteUser(id); 
     }
 
+    @Get('getUser')
     getUserbyNameandID(@Query('name') name:string ,@Query('id') id:number): object {
     return this.userService.getUserByNameandID(name,id);
     }
