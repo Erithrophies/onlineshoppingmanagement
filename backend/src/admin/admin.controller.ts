@@ -26,6 +26,7 @@ export class AdminController {
         return this.adminService.getPhotobyid(photoid);
     } 
     
+    @Get('getadmin')
     getAdminbyNameandID(@Query('name') name:string ,@Query('id') id:number): object {
 return this.adminService.getAdminByNameandID(name,id);
     }
