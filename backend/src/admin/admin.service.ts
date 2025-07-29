@@ -5,14 +5,12 @@ export class AdminService {
     return 'Admin Information Show';
   }
 
-    getPhoto(): string {
-        return 'Admin Photos Show';
-    }
+  
 
     getAdmin():string {
         return "All Admin Show";
     }
-    getPhotobyid(photoid: number): string {
+    getPhotobyid(photoid: number) {
         return 'Admin photo id is ' + photoid;
     }
 

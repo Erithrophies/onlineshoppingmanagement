@@ -1,6 +1,6 @@
-import { Controller,Get,Param,Body,Post,Query, Delete } from "@nestjs/common";    
+import { Controller,Get,Param,Body,Post,Query, Delete, UsePipes, ValidationPipe, ParseIntPipe } from "@nestjs/common";    
 import { AdminService } from './admin.service';
-import { get } from "http";
+import { CreateAdminDto } from "./admin.dto";
 
 @Controller('admin')
 export class AdminController {
@@ -11,10 +11,6 @@ export class AdminController {
         return this.adminService.getAdminInfo();
     }
 
-    @Get('Photo')
-    getPhoto(): string {
-        return this.adminService.getPhoto();
-    }
 
     @Get('all')
     getAdmin(){
@@ -22,17 +18,19 @@ export class AdminController {
     }
 
     @Get('Photo/:id')
-    getPhotobyid(@Param('id') photoid: number): string {
+    getPhotobyid(@Param('id',ParseIntPipe) photoid: number) {    
         return this.adminService.getPhotobyid(photoid);
     } 
     
     @Get('getadmin')
     getAdminbyNameandID(@Query('name') name:string ,@Query('id') id:number): object {
+
 return this.adminService.getAdminByNameandID(name,id);
     }
 
     @Post("addadmin")
-   addAdmin(@Body() admindata: object)  : object{
+    @UsePipes(new ValidationPipe())
+   addAdmin(@Body() admindata: CreateAdminDto): object {
     return this.adminService.addAdmin(admindata);
    }
 
