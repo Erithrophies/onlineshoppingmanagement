@@ -12,7 +12,7 @@ host: 'localhost',
 port: 5432,
 username: 'postgres',
 password: '1234',
-database: 'osm',//Change to your database name
+database: 'osm',
 autoLoadEntities: true,
 synchronize: true,
 } )],
