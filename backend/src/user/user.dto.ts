@@ -20,6 +20,7 @@ export class CreateUserDto {
 
   
   @IsDateString({}, { message: 'Date of birth must be a valid date string (e.g., YYYY-MM-DD)' })
+  @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'Date of birth must be in YYYY-MM-DD format' })
   dateOfBirth: string; 
 
   
