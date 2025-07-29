@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { CreateSellerDto } from "./seller.dto";
 
 @Injectable()
 export class SellerService {
@@ -14,9 +15,25 @@ export class SellerService {
         return "All Seller";
     }
 
-    createSeller(sellerdata:object):object{
-        return sellerdata;
-    }
+    async createSeller( 
+    sellerDto: CreateSellerDto, 
+    nidImage: Express.Multer.File, 
+  ): Promise<any> { 
+    console.log('Service received DTO:', sellerDto);
+    console.log('Service received NID Image:', nidImage);
+
+
+    return {
+      message: 'Seller created successfully with NID image!',
+      sellerData: sellerDto,
+      imageInfo: {
+        filename: nidImage.filename,
+        path: nidImage.path,
+        size: nidImage.size,
+        mimetype: nidImage.mimetype,
+      },
+    };
+  }
     deleteSeller(id: number): string {
         return 'Seller deleted ';
     }
