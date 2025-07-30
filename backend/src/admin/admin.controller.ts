@@ -25,13 +25,13 @@ export class AdminController {
     @Get('getadmin')
     getAdminbyNameandID(@Query('name') name:string ,@Query('id') id:number): object {
 
-return this.adminService.getAdminByNameandID(name,id);
+        return this.adminService.getAdminByNameandID(name,id);
     }
 
     @Post("addadmin")
     @UsePipes(new ValidationPipe())
-   addAdmin(@Body() admindata: CreateAdminDto): object {
-    return this.adminService.addAdmin(admindata);
+       addAdmin(@Body() admindata: CreateAdminDto): object {
+       return this.adminService.addAdmin(admindata);
    }
 
     @Delete('deleteAdmin/:id') 

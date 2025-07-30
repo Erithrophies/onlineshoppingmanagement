@@ -24,6 +24,6 @@ export class CreateAdminDto {
   })
   gender: string;
 
-  @IsNumberString({}, { message: 'Phone number must contain only numbers' })
+  @IsNumberString({},{ message: 'Phone number must contain only numbers' })
   phone: string;
 }
