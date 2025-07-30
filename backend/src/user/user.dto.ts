@@ -1,5 +1,5 @@
 import {IsString, IsEmail,MinLength,Matches,IsOptional,IsUrl,IsDateString, IsDate, } from 'class-validator';
-import { Type } from 'class-transformer'; 
+
 
 export class CreateUserDto {
   @IsString()
@@ -25,6 +25,6 @@ export class CreateUserDto {
 
   
   @IsUrl({}, { message: 'Facebook link must be a valid URL' })
-  facebookLink?: string;
+  facebookLink: string;
 
 }

@@ -34,6 +34,7 @@ export class UserController {
         console.log(userdata);
         return this.userService.createUser(userdata);
     }
+    
     @Delete('deleteUser/:id') 
     deleteUser(@Param('id') id: number): string { 
         return this.userService.deleteUser(id); 
