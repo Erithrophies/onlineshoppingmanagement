@@ -15,7 +15,7 @@ export class CreateAdminDto {
   @IsNotEmpty()
   @MinLength(6, { message: 'Password must be at least 6 characters long' })
   @Matches(/[A-Z]/, {
-    message: 'Password must contain at least one uppercase letter',
+    message: 'invalid password',
   })
   password: string;
 
