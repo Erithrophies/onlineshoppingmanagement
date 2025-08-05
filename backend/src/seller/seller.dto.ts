@@ -7,8 +7,8 @@ export enum SellerStatus {
 
 export class CreateSellerDto {
 
-  @IsString({ message: 'Full name must be a string' })
-  @MaxLength(100, { message: 'Full name must be at most 100 characters long' })
+  @IsString({ message: 'Name must be a string' })
+  @MaxLength(100, { message: 'Name must be at most 100 characters long' })
   fullName: string;
 
   @IsInt({ message: 'Age must be an integer' })
