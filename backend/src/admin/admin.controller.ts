@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './admin.dto';
 import { Admin } from './admin.entity';
@@ -7,18 +7,19 @@ import { Admin } from './admin.entity';
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
-  @Post('create')
+  @Post('createasdmin')
+  @UsePipes(new ValidationPipe())
   createAdmin(@Body() dto: CreateAdminDto): Promise<Admin> {
     return this.adminService.createAdmin(dto);
   }
 
   @Patch('updateCountry/:id')
-  updateCountry(@Param('id') id: number,@Body('country') country: string): Promise<Admin> {
+  updateCountry(@Param('id', ParseIntPipe) id: number,@Body('country') country: string): Promise<Admin> {
     return this.adminService.updateCountry(id, country);
   }
 
-  @Get('byDate')
-  getByJoiningDate(@Query('date') date: string): Promise<Admin[]> {
+  @Get('byDate/:date')
+  getByJoiningDate(@Param('date') date: string): Promise<Admin[]> {
     return this.adminService.getByJoiningDate(date);
   }
 

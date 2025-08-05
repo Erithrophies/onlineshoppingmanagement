@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Equal } from 'typeorm';
+import { Repository, Equal, Between } from 'typeorm';
 import { Admin } from './admin.entity';
 import { CreateAdminDto } from './admin.dto';
 
@@ -15,14 +15,34 @@ export class AdminService {
 
   async updateCountry(id: number, country: string): Promise<Admin> {
     const admin = await this.adminRepo.findOneBy({ id });
-    if (!admin) throw new NotFoundException(`Admin with id ${id} not found`);
+    if (!admin) throw new NotFoundException('Admin with id ${id} not found');
     admin.country = country;
     return this.adminRepo.save(admin);
   }
 
-  async getByJoiningDate(date: string): Promise<Admin[]> {
-    return this.adminRepo.find({where: { joiningDate: Equal(new Date(date)) }});
+
+ async getByJoiningDate(dateStr: string): Promise<Admin[]> {
+    const startDate = new Date(dateStr);
+    startDate.setHours(0, 0, 0, 0);
+
+    const endDate = new Date(dateStr);
+    endDate.setHours(23, 59, 59, 999);
+
+    return this.adminRepo.find({
+      where: {
+        joiningDate: Between(startDate, endDate),
+      },
+    });
   }
+
+
+  // async getByJoiningDate(Date:Date): Promise<Admin[]> {
+  //   return this.adminRepo.find({
+  //   where: {
+  //     date: Date,
+  //   },
+  //   });
+  // }
 
   async getByUnknownCountry(): Promise<Admin[]> {
     return this.adminRepo.find({ where: { country: 'Unknown' }});
