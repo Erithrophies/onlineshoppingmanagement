@@ -36,7 +36,7 @@ export class SellerService {
     seller.status = status;
     await this.sellerRepository.save(seller);
 
-    return { message: 'Seller status updated to ${status}' };
+    return { message: `Seller status updated to ${status}` };
   }
 
   async getInactiveSellers(): Promise<Seller[]> {
