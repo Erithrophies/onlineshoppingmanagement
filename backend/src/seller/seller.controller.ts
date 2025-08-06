@@ -28,6 +28,11 @@ export class SellerController {
     return this.sellerService.getInactiveSellers();
   }
 
+  @Get('status/:status')
+  getByStatus(@Param('status') status: SellerStatus) {
+    return this.sellerService.findByStatus(status);
+  }
+
   @Get('older-than-40')
   getSellersOlderThan40() {
     return this.sellerService.getSellersOlderThan(40);

@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { IsEnum, IsInt, IsString, MaxLength, Min } from 'class-validator';
+import { IsEnum } from 'class-validator';
 
 export enum SellerStatus {
   ACTIVE = 'active',

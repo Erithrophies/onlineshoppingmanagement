@@ -43,6 +43,10 @@ export class SellerService {
     return this.sellerRepository.find({ where: { status: SellerStatus.INACTIVE } });
   }
 
+  async findByStatus(status: SellerStatus) {
+  return this.sellerRepository.find({ where: { status } });
+}
+
   async getSellersOlderThan(age: number): Promise<Seller[]> {
     return this.sellerRepository
       .createQueryBuilder('seller')
