@@ -6,7 +6,7 @@ export enum SellerStatus {
   INACTIVE = 'inactive',
 }
 
-@Entity('sellers')
+@Entity('seller')
 export class Seller {
   @PrimaryGeneratedColumn({ unsigned: true })
   id: number;
