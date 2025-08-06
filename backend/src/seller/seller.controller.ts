@@ -10,13 +10,13 @@ export class SellerController {
 
   @Post('create')
   @UsePipes(new ValidationPipe())
-  async createSeller(@Body() createSellerDto: CreateSellerDto) {
+  createSeller(@Body() createSellerDto: CreateSellerDto) {
     console.log('Received Seller DTO:', createSellerDto);
     return this.sellerService.createSeller(createSellerDto);
   }
 
   @Patch('status/:id')
-  async updateStatus(
+  updateStatus(
     @Param('id') id: number,
     @Body('status') status: SellerStatus,
   ) {
