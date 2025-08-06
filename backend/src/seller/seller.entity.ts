@@ -12,13 +12,9 @@ export class Seller {
   id: number;
 
   @Column({ type: 'varchar', length: 100 })
-  @IsString()
-  @MaxLength(100)
   fullName: string;
 
   @Column({ type: 'int', unsigned: true })
-  @IsInt()
-  @Min(0)
   age: number;
 
   @Column({

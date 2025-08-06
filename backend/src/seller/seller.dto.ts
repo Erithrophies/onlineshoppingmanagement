@@ -1,4 +1,4 @@
-import { IsString, IsEmail, Matches, IsInt, Min, IsEnum, MaxLength } from 'class-validator';
+import { IsString, IsEmail, Matches, IsInt, Min, IsEnum, MaxLength, IsOptional } from 'class-validator';
 
 export enum SellerStatus {
   ACTIVE = 'active',
@@ -15,6 +15,7 @@ export class CreateSellerDto {
   @Min(0, { message: 'Age must be a non-negative number' })
   age: number;
 
+  @IsOptional()
   @IsEnum(SellerStatus, {
     message: 'Status must be either "active" or "inactive"',
   })

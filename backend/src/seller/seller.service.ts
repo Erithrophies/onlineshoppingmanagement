@@ -12,14 +12,19 @@ export class SellerService {
   ) {}
 
   async createSeller(sellerDto: CreateSellerDto): Promise<any> {
-    const seller = this.sellerRepository.create(sellerDto);
-    const result = await this.sellerRepository.save(seller);
-
-    return {
-      message: 'Seller created successfully!',
-      seller: result,
-    };
+  if (!sellerDto.status) {
+    sellerDto.status =
+      Math.random() > 0.5 ? SellerStatus.ACTIVE : SellerStatus.INACTIVE;
   }
+
+  const seller = this.sellerRepository.create(sellerDto);
+  const result = await this.sellerRepository.save(seller);
+
+  return {
+    message: 'Seller created successfully!',
+    seller: result,
+  };
+}
 
   async updateStatus(id: number, status: SellerStatus): Promise<any> {
     const seller = await this.sellerRepository.findOneBy({ id:id  });
