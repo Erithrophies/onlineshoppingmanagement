@@ -21,8 +21,8 @@ export class SellerService {
     };
   }
 
-  async updateStatus(id: string, status: SellerStatus): Promise<any> {
-    const seller = await this.sellerRepository.findOne({ where: { id } });
+  async updateStatus(id: number, status: SellerStatus): Promise<any> {
+    const seller = await this.sellerRepository.findOneBy({ id:id  });
 
     if (!seller) {
       return { message: 'Seller not found' };

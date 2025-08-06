@@ -1,17 +1,18 @@
-import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
-import { IsEnum, IsInt, MaxLength, Min } from 'class-validator';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { IsEnum, IsInt, IsString, MaxLength, Min } from 'class-validator';
 
 export enum SellerStatus {
   ACTIVE = 'active',
   INACTIVE = 'inactive',
 }
 
-@Entity()
+@Entity('sellers')
 export class Seller {
-  @PrimaryColumn({ type: 'varchar', length: 30 })
-  id: string;
+  @PrimaryGeneratedColumn({ unsigned: true })
+  id: number;
 
   @Column({ type: 'varchar', length: 100 })
+  @IsString()
   @MaxLength(100)
   fullName: string;
 
@@ -27,11 +28,4 @@ export class Seller {
   })
   @IsEnum(SellerStatus)
   status: SellerStatus;
-
-  @BeforeInsert()
-  generateId() {
-    if (!this.id) {
-      this.id = 's-' + Date.now();
-    }
-  }
 }

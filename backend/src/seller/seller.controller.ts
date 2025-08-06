@@ -17,7 +17,7 @@ export class SellerController {
 
   @Patch('status/:id')
   async updateStatus(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body('status') status: SellerStatus,
   ) {
     return this.sellerService.updateStatus(id, status);
