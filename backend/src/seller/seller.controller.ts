@@ -1,42 +1,60 @@
-import { Controller, Get, Param, Body, Post, Patch, Query, Delete, UploadedFile, UsePipes, ValidationPipe, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, ValidationPipe } from '@nestjs/common';
 import { SellerService } from './seller.service';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateSellerDto, SellerStatus } from './seller.dto';
-import { diskStorage, MulterError } from 'multer';
+import { Seller } from './seller.entity';
+import { CreateSellerDto } from './seller.dto';
 
-@Controller('seller')
+@Controller('sellers')
 export class SellerController {
   constructor(private readonly sellerService: SellerService) {}
 
-  @Post('create')
+  @Post()
   @UsePipes(new ValidationPipe())
-  createSeller(@Body() createSellerDto: CreateSellerDto) {
-    console.log('Received Seller DTO:', createSellerDto);
-    return this.sellerService.createSeller(createSellerDto);
+  async createSeller(@Body() createSellerDto: CreateSellerDto): Promise<Seller> {
+    return this.sellerService.create(createSellerDto);
   }
+}
 
-  @Patch('status/:id')
-  updateStatus(
-    @Param('id') id: number,
-    @Body('status') status: SellerStatus,
-  ) {
-    return this.sellerService.updateStatus(id, status);
-  }
 
-  @Get('inactive')
-  getInactiveSellers() {
-    return this.sellerService.getInactiveSellers();
-  }
 
-  @Get('status/:status')
-  getByStatus(@Param('status') status: SellerStatus) {
-    return this.sellerService.findByStatus(status);
-  }
+// import { Controller, Get, Param, Body, Post, Patch, Query, Delete, UploadedFile, UsePipes, ValidationPipe, UseInterceptors } from '@nestjs/common';
+// import { SellerService } from './seller.service';
+// import { FileInterceptor } from '@nestjs/platform-express';
+// import { CreateSellerDto, SellerStatus } from './seller.dto';
+// import { diskStorage, MulterError } from 'multer';
 
-  @Get('older-than-40')
-  getSellersOlderThan40() {
-    return this.sellerService.getSellersOlderThan(40);
-  }
+// @Controller('seller')
+// export class SellerController {
+//   constructor(private readonly sellerService: SellerService) {}
+
+//   @Post('create')
+//   @UsePipes(new ValidationPipe())
+//   createSeller(@Body() createSellerDto: CreateSellerDto) {
+//     console.log('Received Seller DTO:', createSellerDto);
+//     return this.sellerService.createSeller(createSellerDto);
+//   }
+
+//   @Patch('status/:id')
+//   updateStatus(
+//     @Param('id') id: number,
+//     @Body('status') status: SellerStatus,
+//   ) {
+//     return this.sellerService.updateStatus(id, status);
+//   }
+
+//   @Get('inactive')
+//   getInactiveSellers() {
+//     return this.sellerService.getInactiveSellers();
+//   }
+
+//   @Get('status/:status')
+//   getByStatus(@Param('status') status: SellerStatus) {
+//     return this.sellerService.findByStatus(status);
+//   }
+
+//   @Get('older-than-40')
+//   getSellersOlderThan40() {
+//     return this.sellerService.getSellersOlderThan(40);
+//   }
   
   // @Get()
   // getSellerInfo(): string {
@@ -62,4 +80,4 @@ export class SellerController {
   // deleteSeller(@Param('id') id: number): string {
   //   return this.sellerService.deleteSeller(id);
   // }
-}
+

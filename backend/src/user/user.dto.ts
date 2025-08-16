@@ -2,20 +2,30 @@ import {IsString, IsEmail,MinLength,Matches,IsOptional,IsUrl,IsDateString, IsDat
 
 
 export class CreateUserDto {
+  // @IsString()
+  // @IsNotEmpty({ message: 'Username is required' })
+  // @MinLength(3, { message: 'Username must be at least 3 characters long' })
+  // @Matches(/^[^0-9]*$/, {
+  //   message: 'Username should not contain any numbers',
+  // })
+  // username: string;
+
+  // @IsString()
+  // @IsNotEmpty({ message: 'Full name is required' })
+  // @Matches(/^[^0-9]*$/, {
+  //   message: 'Full name should not contain any numbers',
+  // })
+  // fullName: string;
+
+   @IsNotEmpty()
   @IsString()
-  @IsNotEmpty({ message: 'Username is required' })
-  @MinLength(3, { message: 'Username must be at least 3 characters long' })
-  @Matches(/^[^0-9]*$/, {
-    message: 'Username should not contain any numbers',
-  })
+  @MinLength(4)
   username: string;
 
+  @IsNotEmpty()
   @IsString()
-  @IsNotEmpty({ message: 'Full name is required' })
-  @Matches(/^[^0-9]*$/, {
-    message: 'Full name should not contain any numbers',
-  })
-  fullName: string;
+  @MinLength(6)
+  password: string;
 
   
 

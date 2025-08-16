@@ -8,38 +8,46 @@ import { Like, Repository } from "typeorm";
 export class UserService {
     constructor(@InjectRepository(User) private userRepository: Repository<User>){}
 
-   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const user = this.userRepository.create(createUserDto);
-    return this.userRepository.save(user);
+     async findOneByUsername(username: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { username } });
   }
 
-     async getUserByFullName(substring: string): Promise<User[]> {
-     return this.userRepository.find({
-      where: 
-      {
-         fullName: Like(`%${substring}%`) },
-    });
+  async findOneById(id: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { id } });
   }
 
-    async getUserByUsername(username: string):Promise<User> {
-        const user = await this.userRepository.findOneBy({ username: username });
-    if (!user) {
-      throw new  NotFoundException('User ' + username + ' not found.');
-    }
-    return user;
-    }
+  //  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  //   const user = this.userRepository.create(createUserDto);
+  //   return this.userRepository.save(user);
+  // }
 
-    async removeByUsername(username : string): Promise<{ message: string }> {
-        const user = await this.userRepository.findOneBy({username:username});
-        if(!user)
-        {
-           throw new NotFoundException('User ' + username+ ' not found.'); 
-        }
+  //    async getUserByFullName(substring: string): Promise<User[]> {
+  //    return this.userRepository.find({
+  //     where: 
+  //     {
+  //        fullName: Like(`%${substring}%`) },
+  //   });
+  // }
 
-        await this.userRepository.delete(user.id);
-       return { message: 'User ' + username + ' has been deleted.'};
+  //   async getUserByUsername(username: string):Promise<User> {
+  //       const user = await this.userRepository.findOneBy({ username: username });
+  //   if (!user) {
+  //     throw new  NotFoundException('User ' + username + ' not found.');
+  //   }
+  //   return user;
+  //   }
+
+  //   async removeByUsername(username : string): Promise<{ message: string }> {
+  //       const user = await this.userRepository.findOneBy({username:username});
+  //       if(!user)
+  //       {
+  //          throw new NotFoundException('User ' + username+ ' not found.'); 
+  //       }
+
+  //       await this.userRepository.delete(user.id);
+  //      return { message: 'User ' + username + ' has been deleted.'};
         
-    }
+  //   }
 
     // getPhoto(): string {
     //     return 'User Photos';

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Query, UsePipes, ValidationPipe } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./user.dto";
 import { get } from "http";
@@ -8,26 +8,35 @@ import { User } from "./user.entity";
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @Post('createUser')
-    @UsePipes(new ValidationPipe())
-    createUser(@Body() userdata: CreateUserDto):Promise<User>{
-            return this.userService.createUser(userdata);
+     @Get(':username')
+  async getUserByUsername(@Param('username') username: string): Promise<User> {
+    const user = await this.userService.findOneByUsername(username);
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
-
-    @Get('getUser')
-    getUserByFullName(@Query('name') name:string): Promise<User[]> {
-         return this.userService.getUserByFullName(name);
-    }
-    
-    @Get(':username')
-    getUserByUsername(@Param('username') username: string): Promise<User> {
-    return this.userService.getUserByUsername(username);
-    }
-
-    @Delete('deleteUser/:username')
-    removeByUsername(@Param('username') username: string): Promise<{ message: string }> {
-    return this.userService.removeByUsername(username);
+    return user;
   }
+
+  //   @Post('createUser')
+  //   @UsePipes(new ValidationPipe())
+  //   createUser(@Body() userdata: CreateUserDto):Promise<User>{
+  //           return this.userService.createUser(userdata);
+  //   }
+
+  //   @Get('getUser')
+  //   getUserByFullName(@Query('name') name:string): Promise<User[]> {
+  //        return this.userService.getUserByFullName(name);
+  //   }
+    
+  //   @Get(':username')
+  //   getUserByUsername(@Param('username') username: string): Promise<User> {
+  //   return this.userService.getUserByUsername(username);
+  //   }
+
+  //   @Delete('deleteUser/:username')
+  //   removeByUsername(@Param('username') username: string): Promise<{ message: string }> {
+  //   return this.userService.removeByUsername(username);
+  // }
     
 
     // @Get()

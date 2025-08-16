@@ -1,25 +1,36 @@
-import { IsString, IsEmail, Matches, IsInt, Min, IsEnum, MaxLength, IsOptional } from 'class-validator';
+import { IsString, IsEmail, Matches, IsInt, Min, IsEnum, MaxLength, IsOptional, IsNotEmpty } from 'class-validator';
+import { CreateUserDto } from 'src/user/user.dto';
 
-export enum SellerStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
+// export enum SellerStatus {
+//   ACTIVE = 'active',
+//   INACTIVE = 'inactive',
+// }
+
+export class CreateSellerDto extends CreateUserDto {
+  @IsNotEmpty()
+  @IsString()
+  shopName: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
 }
 
-export class CreateSellerDto {
+  
 
-  @IsString({ message: 'Name must be a string' })
-  @MaxLength(100, { message: 'Name must be at most 100 characters long' })
-  fullName: string;
+  // @IsString({ message: 'Name must be a string' })
+  // @MaxLength(100, { message: 'Name must be at most 100 characters long' })
+  // fullName: string;
 
-  @IsInt({ message: 'Age must be an integer' })
-  @Min(0, { message: 'Age must be a non-negative number' })
-  age: number;
+  // @IsInt({ message: 'Age must be an integer' })
+  // @Min(0, { message: 'Age must be a non-negative number' })
+  // age: number;
 
-  @IsOptional()
-  @IsEnum(SellerStatus, {
-    message: 'Status must be either "active" or "inactive"',
-  })
-  status?: SellerStatus;
+  // @IsOptional()
+  // @IsEnum(SellerStatus, {
+  //   message: 'Status must be either "active" or "inactive"',
+  // })
+  // status?: SellerStatus;
 
   // @IsString({ message: 'Name must be a string' })
   // @Matches(/^[a-zA-Z]*$/, {
@@ -39,4 +50,4 @@ export class CreateSellerDto {
   // })
   // nidNumber: string;
 
-}
+//}

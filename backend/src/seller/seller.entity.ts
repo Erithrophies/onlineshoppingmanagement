@@ -1,27 +1,44 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { IsEnum } from 'class-validator';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import { User } from '../user/user.entity';
+import { Product } from '../product/product.entity';
 
-export enum SellerStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
-}
+// export enum SellerStatus {
+//   ACTIVE = 'active',
+//   INACTIVE = 'inactive',
+// }
 
 @Entity('seller')
 export class Seller {
-  @PrimaryGeneratedColumn({ unsigned: true })
+
+   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 100 })
-  fullName: string;
+  @Column()
+  shopName: string;
 
-  @Column({ type: 'int', unsigned: true })
-  age: number;
+  @Column()
+  email: string;
 
-  @Column({
-    type: 'enum',
-    enum: SellerStatus,
-    default: SellerStatus.ACTIVE,
-  })
-  @IsEnum(SellerStatus)
-  status: SellerStatus;
+  @OneToOne(() => User, user => user.seller)
+  @JoinColumn()
+  user: User;
+
+  @OneToMany(() => Product, product => product.seller)
+  products: Product[];
+  // @PrimaryGeneratedColumn({ unsigned: true })
+  // id: number;
+
+  // @Column({ type: 'varchar', length: 100 })
+  // fullName: string;
+
+  // @Column({ type: 'int', unsigned: true })
+  // age: number;
+
+  // @Column({
+  //   type: 'enum',
+  //   enum: SellerStatus,
+  //   default: SellerStatus.ACTIVE,
+  // })
+  // @IsEnum(SellerStatus)
+  // status: SellerStatus;
 }
