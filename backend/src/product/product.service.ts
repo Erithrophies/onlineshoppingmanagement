@@ -17,7 +17,7 @@ export class ProductService {
   async create(createProductDto: CreateProductDto): Promise<Product> {
     const seller = await this.sellersRepository.findOne({ where: { id: createProductDto.sellerId } });
      if (!seller) {
-      throw new HttpException(`Seller with ID ${createProductDto.sellerId} not found`, HttpStatus.NOT_FOUND);
+      throw new HttpException('Seller with ID ${createProductDto.sellerId} not found', HttpStatus.NOT_FOUND);
     }
     const product = this.productsRepository.create({
       ...createProductDto,

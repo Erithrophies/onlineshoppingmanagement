@@ -1,18 +1,46 @@
-import { IsNotEmpty, IsString, IsEmail, Matches, MinLength, IsIn, IsNumberString, IsDateString, IsOptional, MaxLength } from 'class-validator';    
 
-export class CreateAdminDto {
+import { IsString, IsEmail, IsNotEmpty } from 'class-validator';
+import { CreateUserDto } from '../user/user.dto';
+
+ 
+export class CreateAdminDto extends CreateUserDto {
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+  
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { IsNotEmpty, IsString, IsEmail, Matches, MinLength, IsIn, IsNumberString, IsDateString, IsOptional, MaxLength } from 'class-validator';    
+
+// export class CreateAdminDto {
  
 
 
- @IsOptional()
-  @IsString()
-  @MaxLength(30)
-  country?: string;
+// @IsOptional()
+// @IsString()
+// @MaxLength(30)
+// country?: string;
 
 
 
 
-
+// }
 
 
 
@@ -62,4 +90,4 @@ export class CreateAdminDto {
 
   // @IsNumberString({},{ message: 'Phone number must contain only numbers' })
   // phone: string;
-}
+

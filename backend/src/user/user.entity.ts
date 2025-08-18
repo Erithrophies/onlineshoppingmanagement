@@ -1,10 +1,54 @@
-import { Customer } from "src/customer/customer.entity";
-import { Seller } from "src/seller/seller.entity";
-import { Admin, BeforeInsert, Column, Entity, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Customer } from "../customer/customer.entity";
+import { Seller } from "../seller/seller.entity";
+
+import {Column, Entity, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import * as bcrypt from 'bcrypt'; 
 
 @Entity()
 export class User {
  
+
+  @PrimaryGeneratedColumn()
+  id: string;
+
+  @Column({ unique: true })
+  username: string;
+
+  @Column()
+  passwordHash: string;
+
+  @Column({ type: 'enum', enum: ['customer', 'seller', 'admin'], default: 'customer' })
+  role: string;
+
+
+
+  @OneToOne(() => Seller, seller => seller.user, { nullable: true })
+  seller: Seller;
+
+  @OneToOne(() => Customer, customer => customer.user, { nullable: true })
+  customer: Customer;
+  admin: any;
+ 
+ 
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // @PrimaryColumn({ type: 'varchar', length: 30 })
   // id: string;
 
@@ -28,24 +72,5 @@ export class User {
       
   //   }
   // }
-
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @Column({ unique: true })
-  username: string;
-
-  @Column()
-  passwordHash: string;
-
-  // @OneToOne(() => Admin, admin => admin.user, { nullable: true })
-  // admin: Admin;
-
-  @OneToOne(() => Seller, seller => seller.user, { nullable: true })
-  seller: Seller;
-
-  @OneToOne(() => Customer, customer => customer.user, { nullable: true })
-  customer: Customer;
-}
 
 

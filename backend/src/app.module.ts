@@ -8,10 +8,11 @@ import { CustomerModule } from './customer/customer.module';
 import { ProductModule } from './product/product.module';
 import { PaymentModule } from './payment/payment.module';
 import { OrderModule } from './order/order.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
-  imports: [AdminModule, UserModule, SellerModule, CustomerModule, ProductModule, PaymentModule, OrderModule, TypeOrmModule.forRoot(
+  imports: [AuthModule,AdminModule, UserModule, SellerModule, CustomerModule, ProductModule, PaymentModule, OrderModule, TypeOrmModule.forRoot(
 { type: 'postgres',
 host: 'localhost',
 port: 5432,

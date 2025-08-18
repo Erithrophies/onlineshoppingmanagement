@@ -25,6 +25,7 @@ export class Seller {
 
   @OneToMany(() => Product, product => product.seller)
   products: Product[];
+  status: string;
   // @PrimaryGeneratedColumn({ unsigned: true })
   // id: number;
 
