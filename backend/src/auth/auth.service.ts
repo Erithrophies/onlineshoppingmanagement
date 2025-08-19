@@ -1,8 +1,10 @@
+// src/auth/auth.service.ts
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { LoginDto } from './auth.dto';
 import * as bcrypt from 'bcrypt';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -11,118 +13,47 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
+  async validateUser(username: string, pass: string): Promise<User> {
+    const user = await this.userService.findOneByUsername(username);
+    if (!user) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
 
+    if (!user.passwordHash) {
+      throw new HttpException('Invalid user configuration', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-// auth.service.ts
-async validateUser(username: string, pass: string): Promise<any> {
-  const user = await this.userService.findOneByUsername(username);
-  if (!user) {
-    throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    const isMatch = await bcrypt.compare(pass, user.passwordHash);
+    if (!isMatch) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+
+    // Return the full user object, which will have its relations loaded by the service
+    return user;
   }
-  
-  // Add this check to ensure password comparison works
-  if (!user.passwordHash) {
-    throw new HttpException('Invalid user configuration', HttpStatus.INTERNAL_SERVER_ERROR);
+
+  async login(loginDto: LoginDto) {
+    // validateUser now returns the full user entity
+    const user = await this.validateUser(loginDto.username, loginDto.password);
+
+    // Correct the variable type by explicitly defining it as 'string | null'
+    let role: string | null = null;
+    if (user.admin) {
+      role = 'admin';
+    } else if (user.seller) {
+      role = 'seller';
+    } else if (user.customer) {
+      role = 'customer';
+    }
+
+    const payload = {
+      username: user.username,
+      sub: user.id,
+      role: role // Include the determined role in the payload
+    };
+
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
-  
-  const isMatch = await bcrypt.compare(pass, user.passwordHash);
-  if (!isMatch) {
-    throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
-  }
-  
-  // Return the user WITH role information
-  return {
-    id: user.id,
-    username: user.username,
-    role: user.role
-  };
 }
-
-// auth.service.ts
-async login(loginDto: LoginDto) {
-  const user = await this.validateUser(loginDto.username, loginDto.password);
-  
-  const payload = { 
-    username: user.username,
-    sub: user.id,
-    role: user.role // Ensure role is included
-  };
-  
-  return {
-    access_token: this.jwtService.sign(payload),
-  };
-}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-// import { JwtService } from '@nestjs/jwt';
-// import { UserService } from '../user/user.service';
-// import { LoginDto } from './auth.dto';
-// import * as bcrypt from 'bcrypt';
-
-// @Injectable()
-// export class AuthService {
-//   constructor(
-//     private readonly userService: UserService,
-//     private readonly jwtService: JwtService,
-//   ) {}
-
-//   async validateUser(username: string, pass: string): Promise<any> {
-//     const user = await this.userService.findOneByUsername(username);
-//     if (!user) {
-//       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
-//     }
-//     const isMatch = await bcrypt.compare(pass, user.passwordHash);
-//     if (!isMatch) {
-//       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
-//     }
-//     const { passwordHash, ...result } = user;
-//     return result;
-//   }
-
-// // auth.service.ts
-// async login(loginDto: LoginDto) {
-//   const user = await this.validateUser(loginDto.username, loginDto.password);
-  
-//   // Include role in payload
-//   const payload = { 
-//     username: user.username, 
-//     sub: user.id,
-//     role: user.role // ✅ Added role
-//   };
-  
-//   return {
-//     access_token: this.jwtService.sign(payload),
-//   };
-
-//   }
-// }

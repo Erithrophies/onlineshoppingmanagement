@@ -7,6 +7,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '../user/user.module'; // Keep this
 import { JwtStrategy } from './jwt.strategy';
 import{ JwtAuthGuard } from './jwt.auth.guard';
+import { CustomerGuard } from 'src/customer/customer.guard';
+import { AdminRoleGuard } from 'src/admin/admin.roleguard';
 
 @Module({
   imports: [
@@ -15,11 +17,11 @@ import{ JwtAuthGuard } from './jwt.auth.guard';
     JwtModule.register({
       secret: 'your_secret_key',
       signOptions: { expiresIn: '60m' },
-    }),
+    }),UserModule,
   ],
-  providers: [AuthService, JwtStrategy, JwtAuthGuard],
+  providers: [ AuthService, JwtStrategy, JwtAuthGuard],
   controllers: [AuthController],
-  exports: [JwtAuthGuard], // Export JwtAuthGuard if you want to use it in other modules
+  exports: [AuthService,JwtAuthGuard], // Export JwtAuthGuard if you want to use it in other modules
 })
 export class AuthModule {}
 

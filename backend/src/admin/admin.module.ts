@@ -10,6 +10,8 @@ import { Product } from '../product/product.entity';
 import { Order } from '../order/order.entity';
 import { Payment } from '../payment/payment.entity';
 import { AuthModule } from '../auth/auth.module'; // Add this
+import { AdminSetupController } from './adminsetup.controller';
+import { AdminRoleGuard } from './admin.roleguard';
 
 @Module({
   imports: [
@@ -21,10 +23,10 @@ import { AuthModule } from '../auth/auth.module'; // Add this
       Order,
       Payment
     ]),
-    AuthModule, // Import AuthModule to access JwtAuthGuard
+    AuthModule// Import AuthModule to access JwtAuthGuard
   ],
-  controllers: [AdminController],
-  providers: [AdminService],
+  controllers: [AdminController,AdminSetupController],
+  providers: [AdminService,AdminRoleGuard],
 })
 export class AdminModule {}
 

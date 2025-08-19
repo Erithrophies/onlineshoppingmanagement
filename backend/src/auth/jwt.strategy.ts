@@ -1,7 +1,9 @@
+// src/auth/jwt.strategy.ts
+
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { UserService } from '../user/user.service';
+import { UserService } from '../user/user.service'; // Keep this import
 import { User } from '../user/user.entity';
 
 
@@ -12,12 +14,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: 'your_secret_key',
-    });   
+    });
   }
 
   async validate(payload: any): Promise<User> {
-    console.log('JWT payload:', payload);
-    const user = await this.userService.findOneById(payload.sub);
+    const { sub: id } = payload;
+    const user = await this.userService.findOneById(id);
+     console.log('User object from JWTStrategy:', user);
+    console.log('Is user an admin?', user?.admin);
+    console.log('Is user a customer?', user?.customer);
+
     if (!user) {
       throw new UnauthorizedException('User not found');
     }

@@ -1,7 +1,7 @@
 import { Customer } from "../customer/customer.entity";
 import { Seller } from "../seller/seller.entity";
-
-import {Column, Entity, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Admin} from "../admin/admin.entity";
+import { Column, Entity, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import * as bcrypt from 'bcrypt'; 
 
 @Entity()
@@ -17,8 +17,8 @@ export class User {
   @Column()
   passwordHash: string;
 
-  @Column({ type: 'enum', enum: ['customer', 'seller', 'admin'], default: 'customer' })
-  role: string;
+  // @Column({ type: 'enum', enum: ['customer', 'seller', 'admin'], default: 'customer' })
+  // role: string;
 
 
 
@@ -27,7 +27,10 @@ export class User {
 
   @OneToOne(() => Customer, customer => customer.user, { nullable: true })
   customer: Customer;
-  admin: any;
+  // admin: any;
+
+  @OneToOne(() => Admin, admin => admin.user, { nullable: true })
+  admin: Admin;
  
  
   

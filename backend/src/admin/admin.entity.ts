@@ -4,7 +4,7 @@ import { User } from '../user/user.entity';
 @Entity('admins')
 export class Admin {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
  
   @Column( { type: 'varchar', length: 150, unique: true })
   name: string;
@@ -12,7 +12,7 @@ export class Admin {
   @Column()
   email: string;
  
-   @OneToOne(() => User, User => User.admin)
+   @OneToOne(() => User, user => user.admin)
   @JoinColumn()
   user: User;
 }
