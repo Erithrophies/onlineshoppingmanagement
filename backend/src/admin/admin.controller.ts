@@ -33,33 +33,53 @@ export class AdminController {
   
   ) {}
 
+<<<<<<< HEAD
  
+=======
+  
+>>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
   @Post('register')
   async registerAdmin(@Body() createAdminDto: CreateAdminDto): Promise<Admin> {
     return this.adminService.create(createAdminDto);
   }
 
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
   @Post('login')
   async login(@Body() loginDto: LoginDto): Promise<{ access_token: string }> {
     return this.authService.login(loginDto);
   }
 
+<<<<<<< HEAD
   
+=======
+ 
+>>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
   @Get('users')
   @UseGuards(JwtAuthGuard, AdminRoleGuard)
   async findAllAdmin(): Promise<Admin[]> {
     return this.adminService.findAllAdmin();
   }
 
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
   @Get('sellers')
   @UseGuards(JwtAuthGuard, AdminRoleGuard)
   async findAllSellers(): Promise<Seller[]> {
     return this.adminService.findAllSellers();
   }
 
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
   @Patch('seller/:id/status')
   @UseGuards(JwtAuthGuard, AdminRoleGuard)
   async updateSellerStatus(
@@ -92,14 +112,22 @@ export class AdminController {
     return { message: `Product with ID ${id} has been deleted.` };
   }
 
+<<<<<<< HEAD
   
+=======
+ 
+>>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
   @Get('orders')
   @UseGuards(JwtAuthGuard, AdminRoleGuard)
   async findAllOrders(): Promise<Order[]> {
     return this.adminService.findAllOrders();
   }
 
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
   @Get('payments')
   @UseGuards(JwtAuthGuard, AdminRoleGuard)
   async findAllPayments(): Promise<Payment[]> {

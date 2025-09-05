@@ -4,9 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { Like, Repository } from "typeorm";
 
-// src/user/user.service.ts
 
-// ... other imports
 
 @Injectable()
 export class UserService {
@@ -18,19 +16,24 @@ export class UserService {
     private usersRepository: Repository<User>,
   ) {}
 
-  // This method now loads the relations
+  
   async findOneByUsername(username: string): Promise<User | null> {
     return this.usersRepository.findOne({
       where: { username },
-      relations: ['admin', 'seller', 'customer'] // Load all possible roles
+      relations: ['admin', 'seller', 'customer'] 
     });
   }
   
-  // You also need to ensure your findOneById method loads the relations for the JwtStrategy
-  async findOneById(id: string): Promise<User | null> {
+
+  async findOneById(id: number): Promise<User | null> {
     return this.usersRepository.findOne({ 
+<<<<<<< HEAD
         where: { id }, // Adjust the where clause as needed
         relations: ['admin', 'seller', 'customer'] // Load all possible roles
+=======
+        where: { id },
+        relations: ['admin', 'seller', 'customer'] 
+>>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
     });
   }
 }

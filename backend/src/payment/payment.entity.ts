@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import { Order } from '../order/order.entity';
+import { Customer } from 'src/customer/customer.entity';
 
 @Entity('payments')
 export class Payment {
@@ -18,4 +19,8 @@ export class Payment {
   @OneToOne(() => Order)
   @JoinColumn()
   order: Order;
+
+  @ManyToOne(() => Customer, customer => customer.payments) // <-- Add this relationship
+  @JoinColumn() // <-- Add this to define the foreign key column
+  customer: Customer;
 }

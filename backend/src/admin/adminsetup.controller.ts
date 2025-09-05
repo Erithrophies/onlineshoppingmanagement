@@ -1,4 +1,4 @@
-// src/admin/admin-setup.controller.ts
+
 
 import { Controller, Post, Body, ForbiddenException, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AdminService } from './admin.service';
