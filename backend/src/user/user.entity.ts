@@ -17,6 +17,8 @@ export class User {
   @Column()
   passwordHash: string;
 
+
+ 
   // @Column({ type: 'enum', enum: ['customer', 'seller', 'admin'], default: 'customer' })
   // role: string;
 

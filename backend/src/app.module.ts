@@ -9,10 +9,11 @@ import { ProductModule } from './product/product.module';
 import { PaymentModule } from './payment/payment.module';
 import { OrderModule } from './order/order.module';
 import { AuthModule } from './auth/auth.module';
+import { MailModule } from './admin/mailer.module';
 
 
 @Module({
-  imports: [AuthModule,AdminModule, UserModule, SellerModule, CustomerModule, ProductModule, PaymentModule, OrderModule, TypeOrmModule.forRoot(
+  imports:[MailModule,AuthModule,AdminModule, UserModule, SellerModule, CustomerModule, ProductModule, PaymentModule, OrderModule, TypeOrmModule.forRoot(
 { type: 'postgres',
 host: 'localhost',
 port: 5432,

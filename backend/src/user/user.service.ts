@@ -10,6 +10,9 @@ import { Like, Repository } from "typeorm";
 
 @Injectable()
 export class UserService {
+  findAlladmin(): User[] | PromiseLike<User[]> {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
@@ -26,7 +29,7 @@ export class UserService {
   // You also need to ensure your findOneById method loads the relations for the JwtStrategy
   async findOneById(id: string): Promise<User | null> {
     return this.usersRepository.findOne({ 
-        where: { id },
+        where: { id }, // Adjust the where clause as needed
         relations: ['admin', 'seller', 'customer'] // Load all possible roles
     });
   }

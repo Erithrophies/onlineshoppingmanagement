@@ -9,9 +9,9 @@ import { Seller } from '../seller/seller.entity';
 import { Product } from '../product/product.entity';
 import { Order } from '../order/order.entity';
 import { Payment } from '../payment/payment.entity';
-import { AuthModule } from '../auth/auth.module'; // Add this
-import { AdminSetupController } from './adminsetup.controller';
+import { AuthModule } from '../auth/auth.module'; 
 import { AdminRoleGuard } from './admin.roleguard';
+import { MailModule } from './mailer.module';
 
 @Module({
   imports: [
@@ -23,9 +23,9 @@ import { AdminRoleGuard } from './admin.roleguard';
       Order,
       Payment
     ]),
-    AuthModule// Import AuthModule to access JwtAuthGuard
+    AuthModule,MailModule
   ],
-  controllers: [AdminController,AdminSetupController],
+  controllers: [AdminController,],
   providers: [AdminService,AdminRoleGuard],
 })
 export class AdminModule {}
