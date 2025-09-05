@@ -1,3 +1,5 @@
+// src/customer/customer.controller.ts
+
 import {
   Controller,
   Post,
@@ -21,64 +23,82 @@ import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
 import { AdminRoleGuard } from 'src/admin/admin.roleguard';
 import { CustomerGuard } from './customer.guard';
 import { Order } from 'src/order/order.entity';
+import { Payment } from 'src/payment/payment.entity';
 
 @Controller('customers')
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
-  // 1. POST /customers: Create a new customer
   @Post()
   async create(@Body() createCustomerDto: CreateCustomerDto): Promise<Customer> {
     return this.customerService.create(createCustomerDto);
   }
 
-    // GET /customers/my-profile
-@Get('my-profile')
+  @Get('my-profile')
+  @UseGuards(JwtAuthGuard, CustomerGuard) // Correct: customer-only access
+  async getMyProfile(@Req() req): Promise<Customer> {
+    const user = req.user;
+    return this.customerService.findByUserId(user.id);
+  }
+
+  @Post('orders')
+  @UseGuards(JwtAuthGuard, CustomerGuard) // Correct: customer-only access
+  async createOrder(@Req() req, @Body() createOrderDto): Promise<Order> {
+    const user = req.user;
+    return this.customerService.createOrder(user.id, createOrderDto);
+  }
+
+  @Get('my-orders')
+  @UseGuards(JwtAuthGuard, CustomerGuard) // Correct: customer-only access
+  async getMyOrders(@Req() req): Promise<Order[]> {
+    const user = req.user;
+    console.log("I AM IN THE MY-ORDERS ROUTE!");
+    return this.customerService.findOrdersByUserId(user.id);
+  }
+
+  @Get('my-payments')
 @UseGuards(JwtAuthGuard, CustomerGuard)
-async getMyProfile(@Req() req): Promise<Customer> {
+async getMyPayments(@Req() req): Promise<Payment[]> {
   const user = req.user;
-  return this.customerService.findByUserId(user.id);
+  return this.customerService.findPaymentsByUserId(user.id);
 }
 
-// POST /customers/orders
-@Post('orders')
-@UseGuards(JwtAuthGuard, CustomerGuard)
-async createOrder(@Req() req, @Body() createOrderDto): Promise<Order> {
-  const user = req.user;
-  return this.customerService.createOrder(user.id, createOrderDto);
-}
+  @Patch('my-profile')
+  @UseGuards(JwtAuthGuard, CustomerGuard)
+  async updateMyProfile(
+    @Req() req,
+    @Body() updateCustomerDto: UpdateCustomerDto,
+  ): Promise<Customer> {
+    const user = req.user;
+    const updatedCustomer = await this.customerService.updateMyProfile(
+      user.id,
+      updateCustomerDto,
+    );
+    return updatedCustomer;
+  }
 
-
-
-  // 2. GET /customers: Get all customers
   @Get()
-  @UseGuards(JwtAuthGuard,AdminRoleGuard )
+  @UseGuards(JwtAuthGuard, AdminRoleGuard) // Correct: admin-only access
   async findAll(): Promise<Customer[]> {
     return this.customerService.findAll();
   }
 
-  // 3. GET /customers/count: Get the total number of customers
-  // THIS ROUTE IS NOW ABOVE THE DYNAMIC :id ROUTE
   @Get('count')
-  @UseGuards(JwtAuthGuard,AdminRoleGuard )
+  @UseGuards(JwtAuthGuard, AdminRoleGuard) // Correct: admin-only access
   async countAll(): Promise<{ count: number }> {
     const count = await this.customerService.countAll();
     return { count };
   }
 
-  // 4. GET /customers/search/:name: Search for customers by name
-  // THIS ROUTE IS ALSO ABOVE THE DYNAMIC :id ROUTE
   @Get('search/:name')
-  @UseGuards(JwtAuthGuard, AdminRoleGuard)
+  @UseGuards(JwtAuthGuard, AdminRoleGuard) // Correct: admin-only access
   async searchByName(@Param('name') name: string): Promise<Customer[]> {
     return this.customerService.searchByName(name);
   }
 
-  // 5. GET /customers/:id: Get a single customer by ID
-  // THIS MUST BE THE LAST ROUTE WITH A DYNAMIC PARAMETER
   @Get(':id')
-  @UseGuards(JwtAuthGuard,AdminRoleGuard )
+  @UseGuards(JwtAuthGuard, AdminRoleGuard) // Correct: admin-only access
   async findOne(@Param('id') id: number): Promise<Customer> {
     const customer = await this.customerService.findOne(id);
     if (!customer) {
@@ -87,10 +107,12 @@ async createOrder(@Req() req, @Body() createOrderDto): Promise<Order> {
     return customer;
   }
 
-  // 6. PATCH /customers/:id: Partially update a customer by ID
   @Patch(':id')
-  @UseGuards(JwtAuthGuard,AdminRoleGuard )
-  async update(@Param('id') id: number, @Body() updateCustomerDto: UpdateCustomerDto): Promise<Customer> {
+  @UseGuards(JwtAuthGuard, AdminRoleGuard) // Correct: admin-only access
+  async update(
+    @Param('id') id: number,
+    @Body() updateCustomerDto: UpdateCustomerDto,
+  ): Promise<Customer> {
     const customer = await this.customerService.update(id, updateCustomerDto);
     if (!customer) {
       throw new NotFoundException(`Customer with ID ${id} not found.`);
@@ -98,9 +120,9 @@ async createOrder(@Req() req, @Body() createOrderDto): Promise<Order> {
     return customer;
   }
 
-  // 7. DELETE /customers/:id: Delete a customer by ID
+
   @Delete(':id')
-  @UseGuards(JwtAuthGuard,AdminRoleGuard )
+  @UseGuards(JwtAuthGuard, AdminRoleGuard) // Correct: admin-only access
   async remove(@Param('id') id: number): Promise<{ message: string }> {
     const result = await this.customerService.remove(id);
     if (!result) {
@@ -109,16 +131,16 @@ async createOrder(@Req() req, @Body() createOrderDto): Promise<Order> {
     return { message: `Customer with ID ${id} has been deleted.` };
   }
 
-  // 8. PUT /customers/:id: Fully update a customer by ID
   @Put(':id')
-  @UseGuards(JwtAuthGuard,AdminRoleGuard )
-  async replace(@Param('id') id: number, @Body() createCustomerDto: CreateCustomerDto): Promise<Customer> {
+  @UseGuards(JwtAuthGuard, AdminRoleGuard) // Correct: admin-only access
+  async replace(
+    @Param('id') id: number,
+    @Body() createCustomerDto: CreateCustomerDto,
+  ): Promise<Customer> {
     const customer = await this.customerService.replace(id, createCustomerDto);
     if (!customer) {
       throw new NotFoundException(`Customer with ID ${id} not found.`);
     }
     return customer;
   }
-
-
 }

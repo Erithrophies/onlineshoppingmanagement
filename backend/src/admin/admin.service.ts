@@ -21,12 +21,12 @@ export class AdminService {
     @InjectRepository(Payment) private paymentRepo: Repository<Payment>,
   ) {}
 
-  // Method to count existing admins (used by the initial setup route)
+  
   async countAdmins(): Promise<number> {
     return this.adminRepo.count();
   }
 
-  // Method to create a new admin and their associated user
+  
   async create(createAdminDto: CreateAdminDto): Promise<Admin> {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(createAdminDto.password, salt);
@@ -47,17 +47,17 @@ export class AdminService {
     return this.adminRepo.save(admin);
   }
 
-  // 1. Get all users
+ 
   async findAllUsers(): Promise<User[]> {
     return this.userRepo.find();
   }
 
-  // 2. Get all sellers
+  
   async findAllSellers(): Promise<Seller[]> {
     return this.sellerRepo.find();
   }
 
-  // 3. Update seller status
+  
   async updateSellerStatus(id: number, status: string): Promise<Seller> {
     const seller = await this.sellerRepo.findOne({ where: { id } });
     if (!seller) {
@@ -67,28 +67,28 @@ export class AdminService {
     return this.sellerRepo.save(seller);
   }
 
-  // 4. Get all products
+
   async findAllProducts(): Promise<Product[]> {
     return this.productRepo.find();
   }
 
-  // 5. Delete a product
+  
   async deleteProduct(id: string): Promise<boolean> {
     const result = await this.productRepo.delete(id);
     return (result.affected ?? 0) > 0;
   }
 
-  // 6. Get all orders
+ 
   async findAllOrders(): Promise<Order[]> {
     return this.orderRepo.find();
   }
 
-  // 7. Get all payments
+  
   async findAllPayments(): Promise<Payment[]> {
     return this.paymentRepo.find();
   }
 
-  // 8. Delete a user
+
   async deleteUser(id: string): Promise<boolean> {
     const result = await this.userRepo.delete(id);
     return (result.affected ?? 0) > 0;

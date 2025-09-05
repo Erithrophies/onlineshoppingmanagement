@@ -23,7 +23,7 @@ import { AdminRoleGuard } from './admin.roleguard';
       Order,
       Payment
     ]),
-    AuthModule// Import AuthModule to access JwtAuthGuard
+    AuthModule
   ],
   controllers: [AdminController,AdminSetupController],
   providers: [AdminService,AdminRoleGuard],

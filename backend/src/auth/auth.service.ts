@@ -1,4 +1,4 @@
-// src/auth/auth.service.ts
+
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
@@ -28,7 +28,7 @@ export class AuthService {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
-    // Return the full user object, which will have its relations loaded by the service
+    
     return user;
   }
 
