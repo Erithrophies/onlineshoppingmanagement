@@ -31,11 +31,7 @@ export class AdminService {
     return this.adminRepo.count();
   }
 
-<<<<<<< HEAD
  
-=======
-  
->>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
   async create(createAdminDto: CreateAdminDto): Promise<Admin> {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(createAdminDto.password, salt);
@@ -58,15 +54,9 @@ export class AdminService {
     return this.adminRepo.save(admin);
   }
 
-<<<<<<< HEAD
   
   async findAllAdmin(): Promise<Admin[]> {
     return this.adminRepo.find();
-=======
- 
-  async findAllUsers(): Promise<User[]> {
-    return this.userRepo.find();
->>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
   }
 
   
@@ -84,11 +74,7 @@ export class AdminService {
     return this.sellerRepo.save(seller);
   }
 
-<<<<<<< HEAD
   
-=======
-
->>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
   async findAllProducts(): Promise<Product[]> {
     return this.productRepo.find();
   }
@@ -99,11 +85,7 @@ export class AdminService {
     return (result.affected ?? 0) > 0;
   }
 
-<<<<<<< HEAD
   
-=======
- 
->>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
   async findAllOrders(): Promise<Order[]> {
     return this.orderRepo.find();
   }
@@ -114,14 +96,9 @@ export class AdminService {
   }
 
 
-<<<<<<< HEAD
 
   async deleteUser(id: number): Promise<boolean> {
     const result = await this.adminRepo.delete(id);
-=======
-  async deleteUser(id: string): Promise<boolean> {
-    const result = await this.userRepo.delete(id);
->>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
     return (result.affected ?? 0) > 0;
   }
 }

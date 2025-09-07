@@ -27,13 +27,8 @@ export class UserService {
 
   async findOneById(id: number): Promise<User | null> {
     return this.usersRepository.findOne({ 
-<<<<<<< HEAD
-        where: { id }, // Adjust the where clause as needed
-        relations: ['admin', 'seller', 'customer'] // Load all possible roles
-=======
         where: { id },
         relations: ['admin', 'seller', 'customer'] 
->>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
     });
   }
 }

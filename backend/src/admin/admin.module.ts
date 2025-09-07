@@ -23,11 +23,7 @@ import { MailModule } from './mailer.module';
       Order,
       Payment
     ]),
-<<<<<<< HEAD
     AuthModule,MailModule
-=======
-    AuthModule
->>>>>>> e3c4b1c805b5aaf48025f92640fee85fa84ea8d4
   ],
   controllers: [AdminController,],
   providers: [AdminService,AdminRoleGuard],
