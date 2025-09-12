@@ -16,6 +16,18 @@ export class UserService {
     private usersRepository: Repository<User>,
   ) {}
 
+
+  
+  async findOneByUsernameWithRoles(username: string): Promise<User | null>  {
+    return this.usersRepository.findOne({
+      where: { username },
+      // This is the key change!
+      // It tells TypeORM to join and load the related entities.
+      relations: ['admin', 'seller', 'customer'],
+    });
+  }
+
+
   
   async findOneByUsername(username: string): Promise<User | null> {
     return this.usersRepository.findOne({
@@ -23,6 +35,8 @@ export class UserService {
       relations: ['admin', 'seller', 'customer'] 
     });
   }
+
+
   
 
   async findOneById(id: number): Promise<User | null> {
