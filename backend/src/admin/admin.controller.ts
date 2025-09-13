@@ -10,6 +10,7 @@ import {
   ValidationPipe,
   UseGuards,
   Post,
+  Put,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { User } from '../user/user.entity';
@@ -23,6 +24,8 @@ import { Admin } from './admin.entity';
 import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
 import { LoginDto } from '../auth/auth.dto'; // Assuming you have a LoginDto here
 import { AuthService } from 'src/auth/auth.service';
+import { CreateProductDto } from 'src/product/product.dto';
+import { UpdateProductDto } from 'src/product/updateProduct.dto';
 
 @Controller('admin')
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
@@ -116,4 +119,25 @@ export class AdminController {
     }
     return { message: `User with ID ${id} has been deleted.` };
   }
+
+  // In admin.controller.ts - Add these endpoints
+
+@Post('product')
+@UseGuards(JwtAuthGuard, AdminRoleGuard)
+async createProduct(@Body() createProductDto: CreateProductDto): Promise<Product> {
+  return this.adminService.createProduct(createProductDto);
+}
+
+@Put('product/:id')
+@UseGuards(JwtAuthGuard, AdminRoleGuard)
+async updateProduct(
+  @Param('id') id: string,
+  @Body() updateProductDto: UpdateProductDto,
+): Promise<Product> {
+  const product = await this.adminService.updateProduct(id, updateProductDto);
+  if (!product) {
+    throw new NotFoundException(`Product with ID ${id} not found.`);
+  }
+  return product;
+}
 }
