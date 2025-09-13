@@ -26,7 +26,27 @@ export class ProductService {
     return this.productsRepository.save(product);
   }
 
-  async findAll(): Promise<Product[]> {
-    return this.productsRepository.find();
+  async findAll(search?: string): Promise<Product[]> {
+  const query = this.productsRepository.createQueryBuilder('product')
+    .leftJoinAndSelect('product.seller', 'seller'); // join seller info
+
+  if (search) {
+    query.where('product.name LIKE :search', { search: `%${search}%` });
   }
+
+  return query.getMany();
+}
+
+async findOne(id: number): Promise<Product> {
+  const product = await this.productsRepository.findOne({
+    where: { id },
+    relations: ['seller'], // include seller info
+  });
+
+  if (!product) {
+    throw new HttpException(`Product with ID ${id} not found`, HttpStatus.NOT_FOUND);
+  }
+
+  return product;
+}
 }

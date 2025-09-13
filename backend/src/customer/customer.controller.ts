@@ -57,6 +57,13 @@ export class CustomerController {
     return this.customerService.findOrdersByUserId(user.id);
   }
 
+  @Get('my-orders/:id')
+@UseGuards(JwtAuthGuard, CustomerGuard)
+async getMyOrder(@Req() req, @Param('id') id: number): Promise<Order> {
+  const user = req.user;
+  return this.customerService.findOrderById(user.id, id);
+}
+
   @Get('my-payments')
 @UseGuards(JwtAuthGuard, CustomerGuard)
 async getMyPayments(@Req() req): Promise<Payment[]> {
@@ -77,6 +84,14 @@ async getMyPayments(@Req() req): Promise<Payment[]> {
     );
     return updatedCustomer;
   }
+
+  @Get('my-orders/total')
+@UseGuards(JwtAuthGuard, CustomerGuard)
+async getMyOrdersTotal(@Req() req): Promise<{ total: number }> {
+  const user = req.user;
+  const total = await this.customerService.calculateOrderTotal(user.id);
+  return { total };
+}
 
   @Get()
   @UseGuards(JwtAuthGuard, AdminRoleGuard) // Correct: admin-only access

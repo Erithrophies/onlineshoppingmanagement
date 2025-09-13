@@ -202,4 +202,20 @@ export class CustomerService {
 
     return customer.payments;
   }
+
+    async calculateOrderTotal(userId: number): Promise<number> {
+    const orders = await this.findOrdersByUserId(userId);
+    return orders.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
+  }
+
+   async findOrderById(userId: number, orderId: number): Promise<Order> {
+  const order = await this.orderRepo.findOne({
+    where: { id: orderId, customer: { user: { id: userId } } },
+    relations: ['orderDetails', 'orderDetails.product'], // to see items inside
+  });
+  if (!order) {
+    throw new NotFoundException(`Order ${orderId} not found for this customer.`);
+  }
+  return order;
+}
 }
