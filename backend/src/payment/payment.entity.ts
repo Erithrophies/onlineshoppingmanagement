@@ -21,6 +21,6 @@ export class Payment {
   order: Order;
 
   @ManyToOne(() => Customer, customer => customer.payments) // <-- Add this relationship
-  @JoinColumn() // <-- Add this to define the foreign key column
-  customer: Customer;
+  @JoinColumn() // <-- Add this to define the foreign key column
+  customer: Customer;
 }
