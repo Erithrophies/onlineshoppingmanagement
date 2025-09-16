@@ -10,6 +10,6 @@ export class CustomerGuard implements CanActivate {
     const user: User = request.user; 
 
    
-    return user && user.customer !== null;
+    return !!user && !!user.customer;
   }
 }

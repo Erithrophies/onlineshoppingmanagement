@@ -29,6 +29,7 @@ import { Payment } from 'src/payment/payment.entity';
 import { CreatePaymentDto } from 'src/payment/payment.dto';
 import { OrderWithStatus } from './customer.service'; 
 
+@UseGuards(JwtAuthGuard, CustomerGuard)
 @Controller('customers')
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 export class CustomerController {
@@ -42,6 +43,7 @@ export class CustomerController {
   @Get('my-profile')
   @UseGuards(JwtAuthGuard, CustomerGuard) // Correct: customer-only access
   async getMyProfile(@Req() req): Promise<Customer> {
+    console.log('Request.user in controller:', req.user);
     const user = req.user;
     return this.customerService.findByUserId(user.id);
   }

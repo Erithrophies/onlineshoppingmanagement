@@ -12,6 +12,7 @@ import { Product } from 'src/product/product.entity';
 import { OrderDetails } from 'src/order/order-details.entity';
 import { Payment } from 'src/payment/payment.entity';
 import { CreatePaymentDto } from 'src/payment/payment.dto';
+import { sendOrderNotification } from 'src/order/order-notification.service';
 
 export interface OrderWithStatus {
   id: number;
@@ -149,6 +150,8 @@ export class CustomerService {
       throw new NotFoundException('Customer not found for this user.');
     }
 
+    console.log('Sending Pusher event to channel:', `customer-${user.customer.id}`, createOrderDto);
+
     // 1. Create and save the main order object first
     const newOrder = this.orderRepo.create({
       customer: user.customer,
@@ -182,7 +185,16 @@ export class CustomerService {
 
     // 3. Update the total price on the order
     savedOrder.totalPrice = totalPrice;
-    return this.orderRepo.save(savedOrder);
+    const finalOrder = await this.orderRepo.save(savedOrder);
+
+// 4. Send Pusher notification to the customer
+sendOrderNotification(user.customer.id, {
+  orderTitle: 'Order #' + finalOrder.id,  // you can customize the title
+  amount: finalOrder.totalPrice,
+});
+ 
+
+return finalOrder;
   }
 
   

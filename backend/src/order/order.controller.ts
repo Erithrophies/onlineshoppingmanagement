@@ -3,6 +3,9 @@ import { OrderService } from './order.service';
 import { CreateOrderDto } from './order.dto';
 import { Order } from './order.entity';
 
+
+const { sendOrderNotification } = require("./order-notification.service");
+
 @Controller('orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
@@ -10,6 +13,12 @@ export class OrderController {
   @Post()
   @UsePipes(new ValidationPipe())
   async createOrder(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
-    return this.orderService.create(createOrderDto);
+   const order = await this.orderService.create(createOrderDto);
+
+  // Trigger Pusher notification
+  const customerId = order.customer; // get the actual saved customer's ID
+  sendOrderNotification(customerId, `Your order #${order.id} has been successfully placed!`);
+
+  return order; // finally return the saved order
   }
 }
