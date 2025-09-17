@@ -17,10 +17,9 @@ export class User {
   @Column()
   passwordHash: string;
 
+  @Column({ default: 'Admin' }) 
+  role: string;
 
- 
-  // @Column({ type: 'enum', enum: ['customer', 'seller', 'admin'], default: 'customer' })
-  // role: string;
 
 
 
@@ -33,6 +32,7 @@ export class User {
 
   @OneToOne(() => Admin, admin => admin.user, { nullable: true })
   admin: Admin;
+  
  
  
   

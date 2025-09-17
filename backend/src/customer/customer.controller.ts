@@ -29,7 +29,7 @@ import { Payment } from 'src/payment/payment.entity';
 import { CreatePaymentDto } from 'src/payment/payment.dto';
 import { OrderWithStatus } from './customer.service'; 
 
-@UseGuards(JwtAuthGuard, CustomerGuard)
+// @UseGuards(JwtAuthGuard, CustomerGuard)
 @Controller('customers')
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 export class CustomerController {

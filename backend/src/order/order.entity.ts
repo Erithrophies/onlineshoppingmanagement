@@ -9,6 +9,7 @@ export class Order {
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   totalPrice: number;
+  
 
   @ManyToOne(() => Customer, customer => customer.orders)
   customer: Customer;

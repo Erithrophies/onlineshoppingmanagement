@@ -12,6 +12,7 @@ import { Payment } from '../payment/payment.entity';
 import { AuthModule } from '../auth/auth.module'; 
 import { AdminRoleGuard } from './admin.roleguard';
 import { MailModule } from './mailer.module';
+import { PusherModule } from 'src/pusher/pusher.module';
 
 @Module({
   imports: [
@@ -23,7 +24,10 @@ import { MailModule } from './mailer.module';
       Order,
       Payment
     ]),
-    AuthModule,MailModule
+    AuthModule,
+    PusherModule,
+    MailModule,
+    
   ],
   controllers: [AdminController,],
   providers: [AdminService,AdminRoleGuard],
