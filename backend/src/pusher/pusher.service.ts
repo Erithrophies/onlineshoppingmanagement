@@ -1,4 +1,3 @@
-// src/pusher/pusher.service.ts
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as Pusher from 'pusher';
 
@@ -14,26 +13,24 @@ export class PusherService implements OnModuleInit {
       cluster: 'mt1',
       useTLS: true,
     });
-    console.log(' Pusher Channels initialized');
+    console.log('Pusher Channels initialized');
   }
 
-// src/pusher/pusher.service.ts
-async sendAdminNotification(title: string, body: string, deepLink?: string) {
-  try {
-    await this.pusherClient.trigger(
-      'admin-notifications', // channel
-      'admin-activity-event', // event
-      {
-        title,
-        body,
-        deep_link: deepLink || '',
-      }
-    );
-    console.log(' Admin Pusher event sent:', { title, body, deep_link: deepLink });
-  } catch (err) {
-    console.error(' Failed to send admin notification:', err);
+  async sendAdminNotification(title: string, body: string, deepLink?: string) {
+    try {
+      await this.pusherClient.trigger(
+        'admin-notifications',
+        'admin-activity-event',
+        {
+          title,
+          body,
+          deep_link: deepLink || '',
+        }
+      );
+      console.log('Admin Pusher event sent:', { title, body, deep_link: deepLink });
+    } catch (err) {
+      console.error('Failed to send admin notification:', err);
+      throw err; // Re-throw to handle in calling code
+    }
   }
 }
-
-  }
-

@@ -70,11 +70,13 @@ export class AdminService {
 
       const newAdmin = await this.adminRepo.save(admin);
 
-  await this.pusherService.sendAdminNotification(
+// In your create method
+await this.pusherService.sendAdminNotification(
   'New Admin Added',
   `Admin '${createAdminDto.username}' was added successfully.`,
   '/admin/users'
-  );
+);
+
 
 
 
